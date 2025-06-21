@@ -1,0 +1,130 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}Track Maintenance Web{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+
+  main {
+    flex: 1;
+  }
+
+
+        body {
+           display: flex;
+    flex-direction: column;
+            background-color: #f0f4f8;
+            font-family: Arial, sans-serif;
+        
+        }
+
+        .register-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 350px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 25px;
+            background-color: #071625;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0b2a45;
+        }
+
+        .message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .login-link a {
+            color: #071625;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        .navbar{
+          background-color:black;
+        }
+    </style>
+</head>
+<body>
+  <nav class="navbar p-2 text-white">
+    <div class="container-fluid">
+       <a  href="#">  <img src="{% static 'images/safeRails.png' %}" alt="SafeRails Logo" height="50" width="100"></a>
+     
+
+    <div>
+  {% if user.is_authenticated %}
+    <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">Logout</a>
+  {% else %}
+    <a class="btn btn-outline-light btn-sm" href="{% url 'register' %}">Register</a>
+    <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}">Login</a>
+  {% endif %}
+</div>
+    </div>
+  </nav>
+
+  <main class="container mt-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="bg-dark text-white text-center p-2 mt-auto">
+    &copy; 2025 See Track Health Before Failure Happens
+  </footer>
+</body>
+</html>
+
+
