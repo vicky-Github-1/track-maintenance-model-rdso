@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %}Prediction{% endblock %}
+{% block content %}
+{% include 'modals/alert_modal.html' %}
+
+
+ <div class="col-auto mb-3">
+    <a href="/" class="btn btn-outline-dark">
+      ← Back
+    </a>
+  </div>
+<div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; padding: 10px;">
+
+  {% comment %} FIRST PANEL  {% endcomment %}
+  <div style="flex: 1; min-width: 300px; max-width: 500px;">
+    
+    <h2 class="text-center mb-3">Maintenance Risk Prediction</h2>
+    <form method="post" class="border p-4 rounded" style="background: #fff;">
+      {% csrf_token %}
+     
+       <div class="mb-2">
+        <label for="Track_Id">Track_Id</label>
+        <input type="string" step="any" name="Track_Id" required class="form-control">
+      </div>
+      <div class="mb-2">
+        <label for="Speed">Speed</label>
+        <input type="number" step="any" name="Speed" required class="form-control" min="0" max="200">
+      </div>
+      <div class="mb-2">
+        <label for="Vibration">Vibration</label>
+        <input type="number" step="any" name="Vibration" required class="form-control" min="0" max="2.5">
+      </div>
+      <div class="form-group mb-2">
+        <label for="Temperature">Temperature</label>
+        <input type="number" step="any" name="Temperature" required class="form-control" min="0" max="70">
+      </div>
+      <div class="form-group mb-1">
+        <label for="Axle_Load">Axle Load</label>
+        <input type="number" step="any" name="Axle_Load" required class="form-control" min="0" max="30">
+      </div>
+      <div class="form-group mb-1">
+        <label for="Region">Region</label>
+        <input type="text" step="any" name="Region" required class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Predict Risk</button>
+    </form>
+  </div>
+
+  {% comment %} SECOND PANEL {% endcomment %}
+  <div style="flex: 1; min-width: 300px; max-width: 500px;">
+    <h2 class="text-center mb-3">Prediction Result</h2>
+    <div class="border p-4 rounded" style="background: #fff;">
+      {% if prediction %}
+        <div class="details">
+          <p><strong>Track_Id:</strong>  &nbsp; {{ Track_Id }}</p><hr>
+          <p><strong>Speed:</strong>  &nbsp; {{ Speed }}</p><hr>
+           <p><strong>Vibration:</strong>  &nbsp; {{ Vibration }}</p><hr>
+          <p><strong>Temperature:</strong>  &nbsp; {{ Temperature }}</p><hr>
+         
+          <p><strong>Axle Load:</strong>  &nbsp; {{ Axle_Load }}</p><hr>
+          {% comment %} <p><strong>Region:</strong>  &nbsp; {{ Region }}</p><hr> {% endcomment %}
+        </div>
+       
+
+
+        {% if prediction < 75 %}
+         <div style="margin-top:20px; padding:10px; background:#f0f0f0; border-left:4px solid green;">
+          <strong class="text-success">Maintenance Risk: &nbsp; {{ prediction }}% </strong>  </div>
+         {% else %}
+          <div style="margin-top:20px; padding:10px; background:#f0f0f0; border-left:4px solid red;">
+           <strong class="text-danger">Maintenance Risk: &nbsp; {{ prediction }}% </strong>
+  <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#alertModal">
+  Assign Task To Engineers  🚨
+</button>
+
+          </div>
+      {% endif %}
+
+
+
+       
+      {% else %}
+        <p class="text-center text-muted">Prediction data will be shown here after submission.</p>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+  
+
+
+
+
+{% comment %} <a href="/" style="display:inline-block; margin-bottom:20px; text-decoration:none; color:black; background:white; padding:5px 10px; border-radius:5px; border:2px solid black">
+   ← Back
+</a>
+<form method="post">
+  {% csrf_token %}
+  <input type="number" step="any" name="Speed" placeholder="Speed" required><br>
+  <input type="number" step="any" name="Vibration" placeholder="Vibration" required><br>
+  <input type="number" step="any" name="Temperature" placeholder="Temperature" required><br>
+  <input type="number" step="any" name="Axle_Load" placeholder="Axle_Load" required><br>
+  <button type="submit">Predict</button>
+</form>
+
+{% if prediction %}
+  <div style="margin-top:20px; padding:10px; background:#f0f0f0; border-left:4px solid green;">
+    <strong>Prediction:</strong> {{ prediction }}%
+  </div>
+{% endif %} {% endcomment %}
+
+{% endblock %}

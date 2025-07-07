@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Admin{% endblock %}
+{% block content %}
+{% include 'modals/add_user_modal.html' %}
+{% include 'modals/edit_user.html' %}
+
+
+<div class="row mb-4">
+  
+  <!-- Back Button -->
+  <div class="col-auto">
+    <a href="/" class="btn btn-outline-dark">
+      ← Back
+    </a>
+  </div>
+
+  <!-- Add New User Button -->
+  <div class="col text-end">
+    <a href="{% url 'create_user' %}" 
+       class="btn btn-success" 
+       data-bs-toggle="modal" 
+       data-bs-target="#addUserModal">
+      + Add New User
+    </a>
+  </div>
+
+</div>
+
+<div style="flex: 1; min-width: 300px;" >
+        <h3 class="text-center">List Of All Enginners</h3>
+        <table class="table table-bordered table-striped" >
+
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Zone</th>
+                    <th>City</th>
+                    <th>Date Joined</th>
+                    <th>Actions</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+               {% for user in users %}
+                <tr>
+                    
+  <tr>
+    <td>{{ user.username }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.role }}</td>
+    <td>{{ user.zone }}</td>
+    <td>{{ user.city }}</td>
+    <td>{{ user.date_joined }}</td>
+    <td>
+      <a href="{% url 'edit_user' user.pk %}" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal{{ user.pk }}">Edit</a>
+      <a href="{% url 'delete_user' user.pk %}" class="btn btn-danger btn-sm">Delete</a>
+    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

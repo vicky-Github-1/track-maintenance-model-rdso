@@ -98,6 +98,12 @@ html, body {
         .navbar{
           background-color:black;
         }
+
+    .navbar .nav-links {
+    display: flex;
+    gap: 10px;
+}
+        
     </style>
 </head>
 <body>
@@ -106,7 +112,18 @@ html, body {
        <a  href="#">  <img src="{% static 'images/safeRails.png' %}" alt="SafeRails Logo" height="50" width="100"></a>
      
 
-    <div>
+    <div class='nav-links'>
+    {% if user.is_authenticated %}
+    <a class="btn btn-outline-light btn-sm" href="{% url 'home' %}">Home</a>
+    {% endif %}
+    {% if user.is_authenticated and user.is_staff %}
+    <a class="btn btn-outline-light btn-sm" href="{% url 'user_list' %}">Admin</a>
+    {% endif %}
+   {% if user.is_authenticated and not user.is_staff %}
+
+    <a class="btn btn-outline-light btn-sm" href="{% url 'engineer-tasks' %}">Enginner</a>
+    {% endif %}
+  
   {% if user.is_authenticated %}
     <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">Logout</a>
   {% else %}
@@ -124,8 +141,92 @@ html, body {
   <footer class="bg-dark text-white text-center p-2 mt-auto">
     &copy; 2025 See Track Health Before Failure Happens
   </footer>
-</body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Pie Chart
+    const pieCtx = document.getElementById('pieChart');
+    new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Maintenance Required', 'Not Required'],
+            datasets: [{
+                data: [{{ required }}, {{ not_required }}],
+                backgroundColor: ['#f87171', '#34d399']
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
 
+    // Bar Chart
+    const barCtx = document.getElementById('barChart');
+    new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels|safe }},
+            datasets: [{
+                label: 'Predictions Over Time',
+                data: {{ counts|safe }},
+                backgroundColor: '#60a5fa'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            }
+        }
+    });</script>
+    <script>
+  const zoneCityMap = {
+     North: [
+    'Delhi', 'Amritsar', 'Chandigarh', 'Jammu', 'Srinagar', 'Dehradun', 'Shimla', 'Ambala', 'Meerut'
+  ],
+  South: [
+    'Bangalore', 'Chennai', 'Hyderabad', 'Kochi', 'Mangalore', 'Coimbatore', 'Vijayawada', 'Madurai', 'Trivandrum'
+  ],
+  East: [
+    'Kolkata', 'Patna', 'Ranchi', 'Bhubaneswar', 'Guwahati', 'Dibrugarh', 'Silchar', 'Cuttack', 'Jamshedpur','Varanasi'
+  ],
+  West: [
+    'Agra','Mumbai', 'Pune', 'Ahmedabad', 'Jaipur', 'Surat', 'Udaipur', 'Rajkot', 'Nagpur', 'Vadodara'
+  ],
+  Central: [
+    'Lucknow', 'Kanpur', 'Bhopal', 'Indore', 'Raipur', 'Jabalpur', 'Gwalior', 'Jhansi', 'Prayagraj'
+  ]
+
+  };
+
+  document.getElementById('id_zone').addEventListener('change', function () {
+    const selectedZone = this.value || 'North';
+    console.log(selectedZone);
+    const cityDropdown = document.getElementById('id_city');
+
+    // Clear existing cities
+    cityDropdown.innerHTML = '<option value="">Select city</option>';
+
+    // Add cities from map
+    if (zoneCityMap[selectedZone]) {
+      zoneCityMap[selectedZone].forEach(function (city) {
+        const option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        cityDropdown.appendChild(option);
+      });
+    }
+  });
+</script>
+
+
+</body>
 
 </html>
 

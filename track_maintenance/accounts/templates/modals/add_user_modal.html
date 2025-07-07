@@ -1,0 +1,87 @@
+<!-- Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+    
+
+      <form method="post" action="{% url 'create_user' %}">
+  {% csrf_token %}
+
+  <div class="modal-header">
+    <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+
+  <div class="modal-body">
+
+    <!-- Username -->
+    <div class="mb-2">
+      {{ create_form.username.label_tag }}
+      {{ create_form.username }}
+      {% for error in create_form.username.errors %}
+        <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Email -->
+    <div class="mb-2">
+      {{ create_form.email.label_tag }}
+      {{ create_form.email }}
+      {% for error in create_form.email.errors %}
+        <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+   <div class="row">
+    <!-- Password 1 -->
+    <div class="mb-2 col-6">
+      {{ create_form.password1.label_tag }}
+      {{ create_form.password1 }}
+      {% for error in create_form.password1.errors %}
+        <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Password 2 -->
+    <div class="mb-2 col-6">
+      {{ create_form.password2.label_tag }}
+      {{ create_form.password2 }}
+      {% for error in create_form.password2.errors %}
+        <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div></div>
+
+    <!-- Role -->
+      <div class="row">
+    <div class="mb-2 col-6">
+      {{ create_form.role.label_tag }}
+      {{ create_form.role }}
+      {% for error in create_form.role.errors %}
+        <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+   <div class="mb-2 col-6">
+        {{ create_form.zone.label_tag }}
+        {{ create_form.zone }}
+        {% for error in create_form.zone.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div> 
+<div class="col-6"> 
+    <label for="id_city" >City:</label>
+  <select name="city" id="id_city" class="form-control">
+      <option value="">Select zone</option>
+  </select>  
+ </div>
+</div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary">Add User</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+  </div>
+</form>
+
+    </div>
+  </div>
+</div>

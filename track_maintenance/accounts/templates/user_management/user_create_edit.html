@@ -1,0 +1,8 @@
+
+<h2>{% if form.instance.pk %}Edit User{% else %}Create User{% endif %}</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Save</button>
+  <a href="{% url 'user_list' %}">Back</a>
+</form>

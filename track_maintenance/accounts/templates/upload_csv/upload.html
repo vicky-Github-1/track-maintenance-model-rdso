@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Style for Prediction column cells */
+    .prediction-column {
+        background-color: #e6ffe6 !important ; /* Light green */
+        font-weight: bold;
+    }
+
+    /* Style for Prediction header */
+    th.prediction-header {
+        background-color:rgb(27, 117, 75) !important;  /* Bootstrap green */
+        color: white !important;
+        text-align: left;
+    }
+</style>
+  <div class="col-auto mb-3">
+    <a href="/" class="btn btn-outline-dark">
+      ← Back
+    </a>
+  </div>
+<div class="row">
+<div class="container mt-3 col-4" style=" max-width: 600px;margin: 50px auto;">
+     <h2 class="mb-3 text-center">Upload CSV for Prediction</h2>
+    <div class="card shadow-lg p-2 rounded-4">
+       
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div >
+                <label for="csv_file" class="form-label">Choose CSV File</label>
+                <input type="file" name="csv_file" accept=".csv" class="form-control" required>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-md" style=" max-width: 200px;">Upload & Predict</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if table %}
+    <div class="container mt-2 col-8">
+        <div class="card shadow-lg p-4 rounded-4">
+            <h3 class="mb-2 text-center text-success">Prediction Results</h3>
+
+            <!-- Search Input -->
+            <div class="mb-3">
+                <input type="text" id="searchInput" class="form-control" placeholder="Filter by Track ID">
+            </div>
+
+            <!-- Table Wrapper -->
+            <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
+                <style>
+                    table th {
+                        position: sticky;
+                        top: 0;
+                        background-color: #0d6efd;
+                        color: white;
+                        text-align: left;
+                    }
+                    table td {
+                        text-align: left;
+                    }
+                </style>
+                {{ table|safe }}
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Live Search -->
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function () {
+            const input = this.value.toLowerCase();
+            const table = document.getElementById('predictionTable');
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) { 
+                const firstCell = rows[i].cells[0]; 
+                if (firstCell) {
+                    const trackId = firstCell.textContent.toLowerCase();
+                    rows[i].style.display = trackId.includes(input) ? '' : 'none';
+                }
+            }
+        });
+    </script>
+    
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const table = document.getElementById("predictionTable");
+        if (!table) return;
+
+        const headers = table.querySelectorAll("th");
+        let predictionIndex = -1;
+
+        // Find index of "Prediction (%)" column
+        headers.forEach((th, index) => {
+            if (th.textContent.trim().toLowerCase().includes("prediction")) {
+                predictionIndex = index;
+                th.classList.add("prediction-header");
+            }
+        });
+
+        if (predictionIndex === -1) return;
+
+        // Style each cell in the prediction column
+        const rows = table.querySelectorAll("tbody tr");
+        rows.forEach(row => {
+            const cells = row.querySelectorAll("td");
+            if (cells.length > predictionIndex) {
+                const cell = cells[predictionIndex];
+                const value = parseFloat(cell.textContent.replace('%', ''));
+
+                // Always apply base style
+                cell.classList.add("prediction-column");
+
+                // Highlight if > 75%
+                if (!isNaN(value) && value > 75) {
+                    cell.style.color = "red";
+                    cell.style.fontWeight = "bold";
+                }
+            }
+        });
+    });
+</script>
+
+
+
+{% endif %}
+
+
+{% endblock %}

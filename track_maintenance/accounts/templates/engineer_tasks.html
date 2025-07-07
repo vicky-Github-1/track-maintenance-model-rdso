@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+<div class="col-auto mb-3">
+    <a href="/" class="btn btn-outline-dark">
+      ← Back
+    </a>
+  </div>
+<div style="flex: 1; min-width: 300px;" >
+       <h2>Your Assigned Tasks</h2>
+        <table class="table table-bordered table-striped" >
+
+            <thead>
+                <tr>
+                    {% comment %} <th>Track ID</th> {% endcomment %}
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Assigned On</th>
+                    <th>Assigned By (Admin)</th>
+                    
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    {% comment %} <td>{{ p.track_id }}</td> {% endcomment %}
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.description }}</td>
+                    <td>{{ task.created_at  }}</td>
+                    <td> {{  task.assigned_by.username}}</td>
+                    {% comment %} <td>
+                        {% if p.prediction_percent >= 75 %}
+                            <span style="color:red;">Required</span>
+                        {% else %}
+                            <span style="color:green;">Not Required</span>
+                        {% endif %}
+                    </td> {% endcomment %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% comment %} {% empty %}
+    <li>No tasks assigned.</li> {% endcomment %}
+   
+
+
+{% endblock %}

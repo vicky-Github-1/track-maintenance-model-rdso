@@ -1,0 +1,60 @@
+
+
+<!-- Add User Modal -->
+{% for user in users %}
+  <!-- Button to open Edit Modal -->
+  
+
+  <!-- Edit User Modal -->
+  <div class="modal fade" id="editUserModal{{ user.pk }}" tabindex="-1" aria-labelledby="editUserModalLabel{{ user.pk }}" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <form method="post" action="{% url 'edit_user' user.pk %}">
+          {% csrf_token %}
+          <div class="modal-header">
+            <h5 class="modal-title" id="editUserModalLabel{{ user.pk }}">Edit User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+    
+    <div class="mb-2">
+      <label>Username</label>
+      <input type="text" name="username" value="{{ user.username }}" class="form-control">
+    </div>
+
+    <div class="mb-2">
+      <label>Email</label>
+      <input type="email" name="email" value="{{ user.email }}" class="form-control">
+    </div>
+
+    <div class="mb-2">
+      <label>Role</label>
+      <select name="role" class="form-control">
+        <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+        <option value="engineer" {% if user.role == 'engineer' %}selected{% endif %}>Engineer</option>
+      </select>
+    </div>
+
+    <div class="mb-2">
+      <label>New Password</label>
+      <input type="password" name="password1" class="form-control">
+    </div>
+
+    <div class="mb-2">
+      <label>Confirm Password</label>
+      <input type="password" name="password2" class="form-control">
+    </div>
+</div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary">Update</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+
+      </div>
+    </div>
+  </div>
+{% endfor %}
